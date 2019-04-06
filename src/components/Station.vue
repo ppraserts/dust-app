@@ -21,6 +21,19 @@
         <div>
             <h3>{{ stationData.value[0].log_datetime }}</h3>
         </div>
+        <gmap-map
+          :center="center"
+          :zoom="16"
+          style="width:100%;  height: 400px;"
+        >
+          <gmap-marker
+            :key="index"
+            v-for="(m, index) in markers"
+            :position="m.position"
+            @click="center=m.position"
+          ></gmap-marker>
+        </gmap-map>
+        <br/>
     </div>
 </template>
 <script>
@@ -31,7 +44,11 @@ export default {
     return {
       stations: [],
       stationData: {},
-      defaultStation: '9'
+      defaultStation: '9',
+      center: { lat: 45.508, lng: -73.587 },
+      markers: [],
+      places: [],
+      currentPlace: null
     }
   },
   created () {
@@ -47,6 +64,10 @@ export default {
     getStationById: function (id = 9, type = 'avghr') {
       StationApi.get(id, type).then((response) => {
         this.stationData = response.data[0]
+        this.center = {
+          lat: parseFloat(this.stationData.dustboy_lat),
+          lng: parseFloat(this.stationData.dustboy_lon)
+        }
       })
     },
     changeStation: function (event) {
