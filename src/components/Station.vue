@@ -23,7 +23,7 @@
         </div>
         <gmap-map
           :center="center"
-          :zoom="16"
+          :zoom="15"
           style="width:100%;  height: 400px;"
         >
           <gmap-marker
@@ -68,6 +68,7 @@ export default {
           lat: parseFloat(this.stationData.dustboy_lat),
           lng: parseFloat(this.stationData.dustboy_lon)
         }
+        this.markers.push({ position: this.center })
       })
     },
     changeStation: function (event) {
