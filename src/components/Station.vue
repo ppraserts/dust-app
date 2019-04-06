@@ -1,6 +1,6 @@
 <template>
     <div id="station">
-        <select v-on:change="changeStation">
+        <select v-model="defaultStation" v-on:change="changeStation">
           <option v-for="station in stations" v-bind:key="station.id" v-bind:value="station.id">{{ station.dustboy_name}}</option>
         </select>
         <h1><img src="../assets/gps.png" alt=""> {{ stationData.dustboy_name }}</h1>
@@ -31,7 +31,7 @@ export default {
     return {
       stations: [],
       stationData: {},
-      stationIdSelected: ''
+      defaultStation: '9'
     }
   },
   created () {
