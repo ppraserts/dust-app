@@ -1,5 +1,8 @@
 <template>
     <div id="station">
+        <select v-on:change="changeStation">
+          <option v-for="station in stations" v-bind:key="station.id" v-bind:value="station.id">{{ station.dustboy_name}}</option>
+        </select>
         <h1><img src="../assets/gps.png" alt=""> {{ stationData.dustboy_name }}</h1>
         <div class="row" id="displaypm">
             <div class="column" id="displaynum">
@@ -26,13 +29,29 @@ export default {
   name: 'Station',
   data () {
     return {
-      stationData: {}
+      stations: [],
+      stationData: {},
+      stationIdSelected: ''
     }
   },
   created () {
-    StationApi.get(9, 'avghr').then((response) => {
-      this.stationData = response.data[0]
-    })
+    this.getAllStation()
+    this.getStationById()
+  },
+  methods: {
+    getAllStation: function () {
+      StationApi.getAll().then((response) => {
+        this.stations = response.data
+      })
+    },
+    getStationById: function (id = 9, type = 'avghr') {
+      StationApi.get(id, type).then((response) => {
+        this.stationData = response.data[0]
+      })
+    },
+    changeStation: function (event) {
+      this.getStationById(event.target.value)
+    }
   }
 }
 </script>
@@ -83,5 +102,11 @@ label {
   display: table;
   clear: both;
   font-family: 'Kanit', sans-serif;
+}
+select{
+  width: 100%;
+  font-family: 'Kanit', sans-serif;
+  font-size: 1.5em;
+  cursor: pointer;
 }
 </style>
